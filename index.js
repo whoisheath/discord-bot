@@ -27,7 +27,7 @@ client.on("ready", () => {
 });
 
 // Create an event listener for messages
-client.on("message", message => {
+client.on("message", (message) => {
   //exit and stop if prefix ain't here
   if (!message.content.startsWith(prefix)) return;
   //make sure the bot doesn't loop itself
@@ -36,7 +36,7 @@ client.on("message", message => {
   //help commands
   if (message.content.startsWith(`${prefix}help`)) {
     message.channel.send(
-      "!ping \n!spam (must end with a number) \n!chuck \n!donnie \n!bitcoin \n!crypto \n!weather (must end with 5 digit zipcode) \n!nudes \n!politics \n!hotties"
+      "Commands: \n!ping \n!spam (must end with a number) \n!bitcoin \n!crypto"
     );
   }
 
@@ -68,15 +68,13 @@ client.on("message", message => {
   //bitcoin price, thanks coindesk
   if (message.content.startsWith(`${prefix}bitcoin`)) {
     fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
-      .then(res => res.json())
-      .then(price =>
+      .then((res) => res.json())
+      .then((price) =>
         message.channel
           .send(
-            `The price of bitcoin is $${price.bpi.USD.rate} as of ${
-              price.time.updateduk
-            }`
+            `The price of bitcoin is $${price.bpi.USD.rate} as of ${price.time.updateduk}`
           )
-          .catch(err => console.log(err))
+          .catch((err) => console.log(err))
       );
   }
 
@@ -89,16 +87,14 @@ client.on("message", message => {
 //speicifc word listeners
 const everyone = "@everyone";
 
-client.on("message", message => {
+client.on("message", (message) => {
   //don't want to mention @everyone... that's just bad manners
   if (message.content.includes(everyone)) {
     message
       .delete()
-      .then(msg =>
+      .then((msg) =>
         message.channel.send(
-          `${
-            msg.author.username
-          } mentioned everyone, that's just bad manners, so I deleted the message.`
+          `${msg.author.username} mentioned everyone, that's just bad manners, so I deleted the message.`
         )
       )
       .catch(console.error);
