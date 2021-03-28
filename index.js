@@ -12,7 +12,7 @@ const EvePrice = require('./commands/eve-price');
 const client = new Discord.Client();
 
 //auth token
-// const auth = require("./auth.json");
+const auth = require("./auth.json");
 
 //prefix baby!
 const prefix = "!";
@@ -111,4 +111,4 @@ client.on("message", (message) => {
 });
 
 // Log our bot in using the token from https://discordapp.com/developers/applications/me
-client.login('MzU5NDkxMzQxMDUyMjgwODUz.WcBgZg.U-3sNVkpbpHlIVochAxjAOTJ598');
+client.login(auth.token);
