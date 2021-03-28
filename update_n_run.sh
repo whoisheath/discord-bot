@@ -1,6 +1,6 @@
 #!/bin/bash
 imageName=xx:discord-bot
-containerName=thirsty_ride
+containerName=jimmy-steve
 
 docker build -t $imageName -f Dockerfile  .
 

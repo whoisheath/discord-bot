@@ -4,11 +4,15 @@ const Discord = require("discord.js");
 //neat, fetch api isn't implemented in node yet, there's an NPM package for that
 const fetch = require("node-fetch");
 
+// import functions
+const Ping = require('./commands/ping')
+const EvePrice = require('./commands/eve-price');
+
 // Create an instance of a Discord client
 const client = new Discord.Client();
 
 //auth token
-const auth = require("./auth.json");
+// const auth = require("./auth.json");
 
 //prefix baby!
 const prefix = "!";
@@ -22,8 +26,8 @@ client.on("ready", () => {
   console.log("bot on");
 
   //send message to personal channel to let me know that the bot is on/off
-  let channel = client.channels.get("543811624213938186");
-  channel.send("bot here");
+  // let channel = client.channels.get("543811624213938186");
+  // channel.send("bot here");
 });
 
 // Create an event listener for messages
@@ -42,7 +46,12 @@ client.on("message", (message) => {
 
   //ping for some reason
   if (message.content.startsWith(`${prefix}ping`)) {
-    message.channel.send("am i a joke to you?");
+    Ping.Ping(message);  
+  }
+
+  // eve price
+  if (message.content.startsWith(`${prefix}eveprice`)) {
+    EvePrice.evePrice(message)
   }
 
   //key feature, spam
@@ -102,4 +111,4 @@ client.on("message", (message) => {
 });
 
 // Log our bot in using the token from https://discordapp.com/developers/applications/me
-client.login(auth.token);
+client.login('MzU5NDkxMzQxMDUyMjgwODUz.WcBgZg.U-3sNVkpbpHlIVochAxjAOTJ598');
