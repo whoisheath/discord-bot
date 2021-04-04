@@ -1,12 +1,13 @@
 // Import the discord.js module
 const Discord = require("discord.js");
 
-//neat, fetch api isn't implemented in node yet, there's an NPM package for that
-const fetch = require("node-fetch");
-
 // import functions
 const Ping = require('./commands/ping')
 const EvePrice = require('./commands/eve-price');
+const askJimmy = require('./commands/ask-jimmy');
+const Spam = require('./commands/spam');
+const Help = require('./commands/help');
+const CoinPrice = require('./commands/coin-price');
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
@@ -16,7 +17,6 @@ const auth = require("./auth.json");
 
 //prefix baby!
 const prefix = "!";
-let spamCap = 10; // change this number at the number of times Jimmy Steve can respond
 
 /**
  * The ready event is vital, it means that only _after_ this will your bot start reacting to information
@@ -39,14 +39,17 @@ client.on("message", (message) => {
 
   //help commands
   if (message.content.startsWith(`${prefix}help`)) {
-    message.channel.send(
-      "Commands: \n!ping \n!spam (must end with a number) \n!bitcoin \n!crypto"
-    );
+    Help.help(message);
   }
 
   //ping for some reason
   if (message.content.startsWith(`${prefix}ping`)) {
     Ping.Ping(message);  
+  }
+
+  //ping for some reason
+  if (message.content.startsWith(`${prefix}askJimmy`)) {
+    askJimmy.askJimmy(message);  
   }
 
   // eve price
@@ -56,35 +59,12 @@ client.on("message", (message) => {
 
   //key feature, spam
   if (message.content.startsWith(`${prefix}spam`)) {
-    let spamMessage = message.content;
-    let stringNumMessage = spamMessage.slice(
-      Math.max(spamMessage.length - 2, 1)
-    );
-    if (isNaN(stringNumMessage)) {
-      message.channel.send("your spam command must end with a number...");
-    } else if (stringNumMessage > spamCap) {
-      // cap spam at certain level
-      message.channel.send(
-        `${stringNumMessage} is too many spams. Lower your number of spams to be able to use this command. 10 is the max.`
-      );
-    } else {
-      for (let i = 0; i < parseInt(stringNumMessage); i++) {
-        message.channel.send(message.content);
-      }
-    }
+    Spam.Spam(message);
   }
 
   //bitcoin price, thanks coindesk
-  if (message.content.startsWith(`${prefix}bitcoin`)) {
-    fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
-      .then((res) => res.json())
-      .then((price) =>
-        message.channel
-          .send(
-            `The price of bitcoin is $${price.bpi.USD.rate} as of ${price.time.updateduk}`
-          )
-          .catch((err) => console.log(err))
-      );
+  if (message.content.startsWith(`${prefix}coinprice`)) {
+    CoinPrice.coinPrice(message);
   }
 
   //don't buy crypto, kids
